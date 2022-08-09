@@ -1,0 +1,57 @@
+ ListNode* helper(ListNode* a,ListNode *b){
+        if(a==NULL)
+            return b;
+        if(b==NULL)
+            return a;
+        ListNode *sol;
+        if(a->val<b->val)
+        {
+            sol=a;
+            a=a->next;
+        }
+        else
+        {sol=b;
+         b=b->next;}
+        //merging
+        ListNode *temp=sol;
+        while(a!=NULL&&b!=NULL){
+            if(a->val>b->val){
+                temp->next=b;
+                temp=temp->next;
+                b=b->next;
+            }
+            else{
+                temp->next=a;
+                temp=temp->next;
+                a=a->next;
+            }
+        }
+        while(a!=NULL){
+              temp->next=a;
+                temp=temp->next;
+                a=a->next;
+        }
+        while(b!=NULL){
+            temp->next=b;
+                temp=temp->next;
+                b=b->next;
+        }
+        temp->next=NULL;
+        return sol;
+    }
+    ListNode* merge(vector<ListNode*>& lists,int start,int end){
+        if(start>end)
+            return NULL;
+        if(start==end){
+            return lists[start];
+        }
+        int mid=(start+end)/2;
+        ListNode* left=merge(lists,start,mid);
+        ListNode* right=merge(lists,mid+1,end);
+        return helper(left,right);
+    }
+    
+    ListNode* mergeKLists(vector<ListNode*>& lists) {
+        ListNode* sol;
+        return merge(lists,0,lists.size()-1);
+    }
